@@ -1,16 +1,134 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Slider from './_slider.astro';
+import FilterZone from './_filters-zone.astro';
+import FilterGroup from './_filters-group.astro';
+
+import './_style-dropdown.css'
 ---
 
 <Layout>
 	<div class="card">
         <div class="card-body">
             <form>
-				<Slider />
+				<div class="wrapper-form">
+					<label class="search">
+						<input type="search" name="" class="form-control search" placeholder="Search...">
+					</label>
+
+					<div class="wrapper-dropdownFilter" data-wrapper="dropdownFilter">
+						
+						<button class="btn btn-prev" type="button">
+							<i class="bi bi-chevron-left"></i>
+						</button>
+						
+						<div class="wrapper-slider-filter">
+							<FilterZone />
+							<FilterGroup />
+							<FilterGroup />
+							<FilterGroup />
+							<FilterGroup />
+							<FilterGroup />
+							<FilterGroup />
+						</div>
+
+						<button class="btn btn-next" type="button">
+							<i class="bi bi-chevron-right"></i>
+						</button>
+					</div> 
+				</div>
 			</form>
 		</div>
 	</div>
-
-	
 </Layout>
+
+<script is:inline>
+    $('.dropdown-toggle').dropdown({
+        boundary: 'viewport'
+    });
+
+    function initDropdownFilters(wrapperSelector) {
+        $(wrapperSelector).find('.dropdown.dropdownFilter').each(function () {
+            let dropdown = $(this);
+            let container = dropdown.find('.dropdown-menu');
+            let button = dropdown.find('button');
+
+            // Função para atualizar os valores e estado do botão
+            function updateCheckedValues() {
+                let checkedValues = container.find('[data-item="checkbox"]:checked').map(function () {
+                    return $(this).val();
+                }).get();
+
+                console.log(`Dropdown "${button.text()}":`, checkedValues);
+
+                // Adiciona ou remove a classe 'active' no botão
+                if (checkedValues.length > 0) {
+                    button.addClass('active');
+                } else {
+                    button.removeClass('active');
+                }
+            }
+
+            // Impede que o dropdown feche ao clicar nos labels ou inputs
+            container.find('[data-item="dropdownFilter"]').on("click", function(e) {
+                if (e.target.tagName.toLowerCase() === "input") return;
+                e.stopPropagation();
+            });
+
+            // Busca em tempo real, só se existir
+            container.find('.dropdown-search').on('input', function () {
+                let search = $(this).val().toLowerCase();
+                container.find('[data-item="dropdownFilter"]').each(function () {
+                    let text = $(this).text().toLowerCase();
+                    $(this).toggle(text.includes(search));
+                });
+            });
+
+            // Checkboxes individuais (excluindo "Todos")
+            container.find('[data-item="checkbox"]').not('.parent-all').on("change", function () {
+                updateCheckedValues();
+            });
+
+            // Checkbox "Todos"
+            container.find('.parent-all').each(function () {
+                let parent = $(this);
+                let group = parent.data('group');
+
+                // Ao clicar em "Todos"
+                parent.change(function () {
+                    container.find(group).prop('checked', parent.prop('checked'));
+                    updateCheckedValues();
+                });
+
+                // Quando qualquer filho muda, atualiza o "Todos" sem log duplicado
+                container.find(group).change(function () {
+                    parent.prop(
+                        'checked',
+                        container.find(group + ":checked").length === container.find(group).length
+                    );
+                    updateCheckedValues(); // atualiza botão mesmo se checkboxes já marcados
+                });
+            });
+
+            // Inicializa o estado do botão ao carregar, refletindo checkboxes já marcados
+            updateCheckedValues();
+        });
+    }
+
+    $(document).ready(function() {
+        initDropdownFilters('[data-wrapper="dropdownFilter"]');
+    });
+</script>
+
+<script is:inline>
+	$(function(){
+		const slider = $(".wrapper-slider-filter");
+	
+		$(".btn-next").on("click", function(){
+			slider.animate({ scrollLeft: "+=250" }, 1);
+		});
+	
+		$(".btn-prev").on("click", function(){
+			slider.animate({ scrollLeft: "-=250" }, 1);
+		});
+	});
+</script>
