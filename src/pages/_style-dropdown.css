@@ -1,64 +1,31 @@
-.wrapper-form{
+.nav-dropdownFilter{
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
-.wrapper-form label.search{
-    flex: 1 0 350px;
+/* ------------------------------------
+Search
+------------------------------------ */
+.nav-dropdownFilter label.search{
+    width: 100%;
+    max-width: 350px;
     margin-bottom: 0;
 }
-.wrapper-form .form-control.search{
+.nav-dropdownFilter .form-control.search{
     border: 0;
     border-radius: 1.5rem;
     height: 50px;
     background-color: #eeeeee;
 }
-.wrapper-form .form-control.search:focus{
+.nav-dropdownFilter .form-control.search:focus{
     box-shadow: 0 0 0 .1rem rgba(255, 151, 0, 0.5);
 }
 
-
-.wrapper-dropdownFilter{
-    display: flex;
-    align-items: center;
-    gap: 0.15rem;
-    width: 100%;
-}
-
-.wrapper-slider-filter {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    width: 100%;
-    max-width: 500px; /* deixa ocupar todo espaço */
-    overflow-x: hidden;
-    overflow-y: visible;
-    scroll-behavior: smooth; /* animação ao rolar */
-    -webkit-overflow-scrolling: touch; /* rolagem suave no iOS */
-    padding: 0.5rem;
-}
-
-/* esconde barra no Chrome/Edge */
-.wrapper-slider-filter::-webkit-scrollbar {
-    height: 6px;
-}
-.wrapper-slider-filter::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 4px;
-}
-.wrapper-slider-filter::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-/* cada filtro (dropdown) vira um "cardzinho" rolável */
-.wrapper-slider-filter .dropdownFilter {
-    flex: 0 0 auto; /* impede de quebrar linha */
-}
-
-
-
-.dropdownFilter .dropdown-toggle{
+/* ------------------------------------
+ btn-filter
+------------------------------------ */
+.nav-dropdownFilter .btn-filter{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -69,10 +36,13 @@
     background-color: #eee;
     transition: all 0.3s;
 }
-.dropdownFilter .dropdown-toggle:hover{
+.nav-dropdownFilter .btn-filter:hover{
     background-color: #e8e8e8;
 }
-.dropdownFilter .dropdown-toggle::after {
+.nav-dropdownFilter .btn-filter .icon{
+    margin-right: .755em;
+}
+.nav-dropdownFilter .btn-filter.dropdown-toggle::after {
     display: inline-block;
     margin-left: .755em;
     padding-top: 0.25em;
@@ -82,19 +52,52 @@
     font-size: 0.85rem;
     font-family: bootstrap-icons !important;
 }
-.dropdownFilter .dropdown-toggle.active{
+.nav-dropdownFilter .btn-filter.active{
     color: #ad8517;
     border-color: rgb(255, 151, 0, 0.7);
     background-color: rgb(255, 151, 0, 0.2);
 }
-.dropdownFilter .dropdown-toggle.active:hover{
+.nav-dropdownFilter .btn-filter.active:hover{
     border-color: rgb(255, 151, 0, 0.1);
     background-color: rgb(255, 151, 0, 0.3);
 }
-.dropdownFilter .dropdown-toggle:focus{
+.nav-dropdownFilter .btn-filter:focus{
     box-shadow: none;
 }
 
+/* ------------------------------------
+wrapper-slider-dropdownFilter
+------------------------------------ */
+.wrapper-slider-dropdownFilter{
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+}
+
+/* ------------------------------------
+container-slider-filter
+------------------------------------ */
+.container-slider-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 500px;
+    overflow-x: hidden;
+    overflow-y: visible;
+    scroll-behavior: smooth; 
+    -webkit-overflow-scrolling: touch;
+    padding: 0.5rem;
+}
+.container-slider-filter .dropdownFilter {
+    flex: 0 0 auto;
+}
+
+
+
+/* ------------------------------------
+dropdown-menu
+------------------------------------ */
 .dropdownFilter .dropdown-menu{
     padding: 0;
     border: 0;
@@ -137,7 +140,6 @@
     transition: all 0.2s;
     overflow: hidden;
 }
-
 .dropdownFilter .dropdown-menu .dropdown-item input[type="checkbox"]:checked{
     background-color: #ff9700;
 }
@@ -149,6 +151,9 @@
 }
 
 
+/* ------------------------------------
+btns Slider
+------------------------------------ */
 .btn-prev,
 .btn-next{
     display: flex;

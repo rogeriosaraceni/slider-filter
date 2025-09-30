@@ -1,0 +1,14 @@
+<button class="btn btn-filter" type="button" data-toggle="modal" data-target="#moreFilters">
+    <i class="bi bi-sliders icon"></i>
+    <span class="text-nowrap">More filters</span>
+</button>
+
+<script is:inline>
+    $('#moreFilters').on('shown.bs.modal', function () {
+        $('[data-target="#moreFilters"]').addClass('active')
+    })
+
+    $('#moreFilters').on('hidden.bs.modal', function () {
+        $('[data-target="#moreFilters"]').removeClass('active')
+    })
+</script>

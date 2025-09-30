@@ -1,27 +1,30 @@
 ---
+import './_style-dropdown.css'
+
 import Layout from '../layouts/Layout.astro';
 import FilterZone from './_filters-zone.astro';
 import FilterGroup from './_filters-group.astro';
-
-import './_style-dropdown.css'
+import BtnMoreFilters from './_btn-more-filters.astro';
+import SidebarMoreFilters from './_sidebar-more-filters.astro';
 ---
 
 <Layout>
+	<SidebarMoreFilters />
+	
 	<div class="card">
         <div class="card-body">
             <form>
-				<div class="wrapper-form">
+				<div class="nav-dropdownFilter">
 					<label class="search">
 						<input type="search" name="" class="form-control search" placeholder="Search...">
 					</label>
 
-					<div class="wrapper-dropdownFilter" data-wrapper="dropdownFilter">
-						
-						<button class="btn btn-prev" type="button">
+					<section class="wrapper-slider-dropdownFilter" data-wrapper="dropdownFilter">
+						<button class="btn btn-prev" type="button" data-btn-slider="prev">
 							<i class="bi bi-chevron-left"></i>
 						</button>
 
-						<div class="wrapper-slider-filter">
+						<div class="container-slider-filter" data-container="slider">
 							<FilterZone />
 							<FilterGroup />
 							<FilterGroup />
@@ -31,10 +34,12 @@ import './_style-dropdown.css'
 							<FilterGroup />
 						</div>
 
-						<button class="btn btn-next" type="button">
+						<button class="btn btn-next" type="button" data-btn-slider="next">
 							<i class="bi bi-chevron-right"></i>
 						</button>
-					</div> 
+					</section> 
+
+					<BtnMoreFilters />
 				</div>
 			</form>
 		</div>
@@ -120,48 +125,31 @@ import './_style-dropdown.css'
 </script>
 
 <script is:inline>
-$(function(){
-    const slider = $(".wrapper-slider-filter");
-    const btnPrev = $(".btn-prev");
-    const btnNext = $(".btn-next");
-    const step = 250; // distância a rolar
-    const speed = 1; // tempo da animação em ms
+	$(function(){
+		const slider = $('[data-container="slider"]');
+		const btnPrev = $('[data-btn-slider="prev"]');
+		const btnNext = $('[data-btn-slider="next"]');
+		const step = 250;
+		const speed = 1;
 
-    // Função para atualizar visibilidade dos botões
-    function updateButtons() {
-        const scrollLeft = slider.scrollLeft();
-        const scrollWidth = slider[0].scrollWidth;
-        const clientWidth = slider[0].clientWidth;
+		function updateButtons() {
+			const scrollLeft  = slider.scrollLeft();
+			const scrollWidth = slider[0].scrollWidth;
+			const clientWidth = slider[0].clientWidth;
 
-        // No início → esconde prev
-        if (scrollLeft <= 0) {
-            btnPrev.addClass("invisible");
-        } else {
-            btnPrev.removeClass("invisible");
-        }
+			scrollLeft <= 0 ? btnPrev.addClass("invisible") : btnPrev.removeClass("invisible");
+			scrollLeft + clientWidth >= scrollWidth ? btnNext.addClass("invisible") : btnNext.removeClass("invisible");
+		}
 
-        // No fim → esconde next
-        if (scrollLeft + clientWidth >= scrollWidth) {
-            btnNext.addClass("invisible");
-        } else {
-            btnNext.removeClass("invisible");
-        }
-    }
-
-    // Evento botão next
-    btnNext.on("click", function(){
-        slider.animate({ scrollLeft: "+=" + step }, speed, updateButtons);
-    });
-
-    // Evento botão prev
-    btnPrev.on("click", function(){
-        slider.animate({ scrollLeft: "-=" + step }, speed, updateButtons);
-    });
-
-    // Atualiza no load e no scroll manual
-    slider.on("scroll", updateButtons);
-    updateButtons();
-});
-
-
+		btnNext.on("click", function(){
+			slider.animate({ scrollLeft: "+=" + step }, speed, updateButtons);
+		});
+		btnPrev.on("click", function(){
+			slider.animate({ scrollLeft: "-=" + step }, speed, updateButtons);
+		});
+		
+		// Atualiza no load e no scroll manual
+		slider.on("scroll", updateButtons);
+		updateButtons();
+	});
 </script>
